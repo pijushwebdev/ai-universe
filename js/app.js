@@ -1,14 +1,14 @@
 const loadData = async () => {
     const url = `https://openapi.programming-hero.com/api/ai/tools`;
-    try{
+    try {
         const res = await fetch(url);
-    const data = await res.json();
-    showCards(data.data);
+        const data = await res.json();
+        showCards(data.data);
     }
-    catch(error){
+    catch (error) {
         document.body.innerText = error;
     }
-    
+
 
 }
 
@@ -17,7 +17,7 @@ const showCards = (data) => {
     const cardContainer = document.getElementById('card-container');
     toolsData.forEach(element => {
         const featuresList = element.features.map(feature => `<li>${feature}</li>`).join('');
-        cardContainer.innerHTML  += `
+        cardContainer.innerHTML += `
             <div class="col">
                 <div class="card p-3">
                     <div>
@@ -50,56 +50,89 @@ const showCards = (data) => {
 
 const showAiModal = async (elementId) => {
     const url = `https://openapi.programming-hero.com/api/ai/tool/${elementId}`;
-    
-    try{
+
+    try {
         const res = await fetch(url);
         const data = await res.json();
         showAiDetails(data.data)
     }
-    catch(err){
+    catch (err) {
         document.body.innerText = err;
     }
 }
 const showAiDetails = (data) => {
-    console.log(data); // all data
+
+    const featuresObj = data.features;
+    const featuresArr = [];
+
+    for( let key in featuresObj){
+        featuresArr.push(featuresObj[key]);
+    }
+    
+    const featuresList = featuresArr.map(feature => `<li class="text-secondary fw-bold">${feature.feature_name}</li>`).join('');
+    const integrationList = data.integrations ? data.integrations.map(integration => `<li class="text-secondary fw-bold">${integration}</li>`).join('') : 'No Data Found';
+
+    
+
 
     const modalBody = document.getElementById('modal-body');
 
     modalBody.innerHTML = `
     <div class="row row-cols-1 p-5 row-cols-md-2 g-4">
-    <div class="col  bg-danger-subtle p-3">
+    <div class="col rounded-3  bg-danger-subtle p-3">
       <h3>${data.description}</h3>
-      <div class="row row-cols-3">
-        <div class="col p-4 me-2 rounded-3 bg-white">
-            <p class="text-success p-0 fw-bold">${data.pricing ? data.pricing[0].price : "Free Of Cost"}</p>
-            <p class="text-success p-0 fw-bold">${data.pricing ? data.pricing[0].plan : "Basic"}</p>
+      <div class="d-flex justify-content-center text-center">
+        <div class="col py-2 me-2 rounded-3 bg-white d-flex flex-column justify-content-center">
+            <p class="text-success p-0 m-0 fw-bold">${data.pricing ? data.pricing[0].price : "Free Of Cost"}</p>
+            <p class="text-success p-0 m-0 fw-bold">${data.pricing ? data.pricing[0].plan : "Basic"}</p>
         </div>
-        <div class="col p-4 me-2 rounded-3 bg-white">
-            <p class="text-success p-0 fw-bold">${data.pricing ? data.pricing[1].price : "Free Of Cost"}</p>
-            <p class="text-success p-0 fw-bold">${data.pricing ? data.pricing[1].plan : "Basic"}</p>
+        <div class="col py-2 me-2 rounded-3 bg-white d-flex flex-column justify-content-center">
+            <p class="text-warning p-0 m-0 fw-bold">${data.pricing ? data.pricing[1].price : "Free Of Cost"}</p>
+            <p class="text-warning p-0 m-0 fw-bold">${data.pricing ? data.pricing[1].plan : "Pro"}</p>
         </div>
-        <div class="col p-4 me-2 rounded-3 bg-white">
-            <p class="text-success p-0 fw-bold">${data.pricing ? data.pricing[2].price : "Free Of Cost"}</p>
-            <p class="text-success p-0 fw-bold">${data.pricing ? data.pricing[2].plan : "Basic"}</p>
+        <div class="col py-2 me-2 rounded-3 bg-white d-flex flex-column justify-content-center">
+            <p class="text-danger p-0 m-0 fw-bold">${data.pricing ? data.pricing[2].price : "Free Of Cost"}</p>
+            <p class="text-danger p-0 m-0 fw-bold">${data.pricing ? data.pricing[2].plan : "Enterprise"}</p>
+        </div>
+      </div>
+
+
+    <div class="row row-cols-1 row-cols-md-2">
+        <div class="col">
+            <h3>Features</h3>
+            <div>
+                <ul id="features">
+                    ${featuresList}
+                </ul>
+            </div>
         </div>
 
-      </div>
+        <div class="col">
+            <h3>Integration</h3>
+            <div>
+                <ul id="features">
+                    ${integrationList}
+                </ul>
+            </div>
+        </div>
         
+    </div>
       
     </div>
-    <div class="col">
-      <div class="card">
-        <img src="..." class="card-img-top" alt="...">
+    <div class="col rounded-3">
+      <div class="card p-3">
+        <img src="${data.image_link[0]}" class="card-img-top rounded-4" alt="...">
+        <span id="accuracy" class="position-absolute top-0 start-50 translate-middle ">${data.accuracy ? data.accuracy.score : ""}</span>
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+          <h5 class="card-title text-center">${data.input_output_examples ? data.input_output_examples[0].input : "Can you give any example?"}</h5>
+          <p class="card-text text-center">${data.input_output_examples ? data.input_output_examples[0].output : "No! Not Yet! Take a break!!!"}</p>
         </div>
       </div>
     </div>
     
     
   </div>
-    `
+    `;
 
 }
 loadData();
