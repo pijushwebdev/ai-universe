@@ -14,7 +14,7 @@ const loadData = async () => {
         seeMoreBtn.addEventListener('click', () => {
             if(!seeAllCards){
                 showCards(aiInfo);
-                seeAllCards = true;
+                // seeAllCards = true;
                 seeMoreBtn.style.display = 'none';
             }
         })
@@ -25,11 +25,22 @@ const loadData = async () => {
     }
 
 }
+const toggleSpinner = (isSpin) => {
+    const spinDiv = document.getElementById('spin-div');
+    if(isSpin){
+        spinDiv.classList.remove('d-none');
+    }else{
+        spinDiv.classList.add('d-none');
+    }
+}
+window.onload = toggleSpinner(true);
 
 const showCards = (data) => {
     const toolsData = data;
     const cardContainer = document.getElementById('card-container');
     cardContainer.innerHTML = '';
+    const sortCards = document.getElementById('sort-cards');
+    // sortCards.addEventListener('click',)
     toolsData.forEach(element => {
         const featuresList = element.features.map(feature => `<li>${feature}</li>`).join('');
         cardContainer.innerHTML += `
@@ -61,6 +72,7 @@ const showCards = (data) => {
             </div>
         `;
     });
+    toggleSpinner(false);
 }
 
 const showAiModal = async (elementId) => {
