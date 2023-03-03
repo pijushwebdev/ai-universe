@@ -3,17 +3,20 @@ const loadData = async () => {
     try {
         const res = await fetch(url);
         const data = await res.json();
-        showCards(data.data);
+        const aiInfo = data.data.tools;
+
+        const slicedData = aiInfo.slice(0,6);
+        console.log(slicedData)
+        showCards(slicedData);
     }
     catch (error) {
         document.body.innerText = error;
     }
 
-
 }
 
 const showCards = (data) => {
-    const toolsData = data.tools;
+    const toolsData = data;
     const cardContainer = document.getElementById('card-container');
     toolsData.forEach(element => {
         const featuresList = element.features.map(feature => `<li>${feature}</li>`).join('');
