@@ -6,8 +6,19 @@ const loadData = async () => {
         const aiInfo = data.data.tools;
 
         const slicedData = aiInfo.slice(0,6);
-        console.log(slicedData)
         showCards(slicedData);
+
+        const seeMoreBtn = document.getElementById('see-more-btn');
+
+        let seeAllCards = false;
+        seeMoreBtn.addEventListener('click', () => {
+            if(!seeAllCards){
+                showCards(aiInfo);
+                seeAllCards = true;
+                seeMoreBtn.style.display = 'none';
+            }
+        })
+
     }
     catch (error) {
         document.body.innerText = error;
@@ -18,6 +29,7 @@ const loadData = async () => {
 const showCards = (data) => {
     const toolsData = data;
     const cardContainer = document.getElementById('card-container');
+    cardContainer.innerHTML = '';
     toolsData.forEach(element => {
         const featuresList = element.features.map(feature => `<li>${feature}</li>`).join('');
         cardContainer.innerHTML += `
@@ -79,6 +91,9 @@ const showAiDetails = (data) => {
 
 
     const modalBody = document.getElementById('modal-body');
+    const accuracySpan = document.getElementById('accuracy');
+    console.log(accuracySpan);
+
 
     modalBody.innerHTML = `
     <div class="row row-cols-1 p-5 row-cols-md-2 g-4">
@@ -125,7 +140,7 @@ const showAiDetails = (data) => {
     <div class="col rounded-3">
       <div class="card p-3">
         <img src="${data.image_link[0]}" class="card-img-top rounded-4" alt="...">
-        <span id="accuracy" class="bg-danger py-1 px-2 rounded-3 text-white fw-bold ">${data.accuracy.score ? `${data.accuracy.score * 100}% accuracy` : ""}</span>
+        ${data.accuracy.score ? `<span id="accuracy" class="bg-danger py-1 px-2 rounded-3 text-white fw-bold">${data.accuracy.score * 100}% accuracy</span>` : ''}
         <div class="card-body">
           <h5 class="card-title text-center">${data.input_output_examples ? data.input_output_examples[0].input : "Can you give any example?"}</h5>
           <p class="card-text text-center">${data.input_output_examples ? data.input_output_examples[0].output : "No! Not Yet! Take a break!!!"}</p>
