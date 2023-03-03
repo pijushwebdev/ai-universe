@@ -16,3 +16,8 @@
     background-size: 10px;
     opacity: 1;
 }
+#accuracy{
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
