@@ -53,6 +53,8 @@ const showCards = (data) => {
     }
     const sortCards = document.getElementById('sort-cards');
     sortCards.addEventListener('click', () => {
+        toggleSpinner(true);
+        
         showCards(toolsData.sort(compareDate));
     })
     
