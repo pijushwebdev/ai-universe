@@ -35,22 +35,6 @@ const toggleSpinner = (isSpin) => {
 }
 window.onload = toggleSpinner(true);
 
-// const compareDate = (a , b) => {
-//     const dateA = new Date(a.published_in);
-//     const dateB = new Date(b.published_in);
-//     if(dateA > dateB){
-//         return 1;
-//     }else if(dateA < dateB){
-//         return -1;
-//     }else{
-//         return 0;
-//     }
-
-// }
-// const sortCards = document.getElementById('sort-cards');
-// sortCards.addEventListener('click', () => {
-
-// })
 const showCards = (data) => {
     const toolsData = data;
     const cardContainer = document.getElementById('card-container');
@@ -139,7 +123,7 @@ const showAiDetails = (data) => {
 
 
     modalBody.innerHTML = `
-    <div class="row row-cols-1 p-5 row-cols-md-2 g-4">
+    <div class="row row-cols-1 p-5 pt-2 row-cols-md-2 g-4">
     <div class="col rounded-3  bg-danger-subtle p-3">
       <h3>${data.description}</h3>
       <div class="d-flex justify-content-center text-center">
