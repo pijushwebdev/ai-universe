@@ -35,12 +35,43 @@ const toggleSpinner = (isSpin) => {
 }
 window.onload = toggleSpinner(true);
 
+// const compareDate = (a , b) => {
+//     const dateA = new Date(a.published_in);
+//     const dateB = new Date(b.published_in);
+//     if(dateA > dateB){
+//         return 1;
+//     }else if(dateA < dateB){
+//         return -1;
+//     }else{
+//         return 0;
+//     }
+
+// }
+// const sortCards = document.getElementById('sort-cards');
+// sortCards.addEventListener('click', () => {
+
+// })
 const showCards = (data) => {
     const toolsData = data;
     const cardContainer = document.getElementById('card-container');
     cardContainer.innerHTML = '';
+    //sorting by date
+    const compareDate = (a , b) => {
+        const dateA = new Date(a.published_in);
+        const dateB = new Date(b.published_in);
+        if(dateA > dateB){
+            return 1;
+        }else if(dateA < dateB){
+            return -1;
+        }else{
+            return 0;
+        }
+    }
     const sortCards = document.getElementById('sort-cards');
-    // sortCards.addEventListener('click',)
+    sortCards.addEventListener('click', () => {
+        showCards(toolsData.sort(compareDate));
+    })
+    
     toolsData.forEach(element => {
         const featuresList = element.features.map(feature => `<li>${feature}</li>`).join('');
         cardContainer.innerHTML += `
